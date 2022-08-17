@@ -1,0 +1,29 @@
+evaluate:
+  type: "shell"
+  timeout: 2500
+  shell:
+    entrypoint: "python"
+    logStderr: true
+    logVerbosity: 3
+    command:
+      - "-u"
+      - "/evaluate.py"
+metric:
+  type: "shell"
+  timeout: 2500
+  shell:
+    entrypoint: "python"
+    logStderr: true
+    logVerbosity: 3
+    command:
+      - "-u"
+      - "/metric.py"
+
+kubernetesMetricSpecs:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+requireKubernetesMetrics: true
+runMode: "per-resource"
