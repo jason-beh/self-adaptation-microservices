@@ -1,4 +1,21 @@
-# Command List
+# Self-Adaptation with Kubernetes
+A brief example on how to utilise custom pod autoscalers to provide a more flexible approach in allowing our microservices to scale with Kubernetes, instead of the built-in Kubernetes HorizontalPodAutoscaler.
+
+HPA only has one adaptation strategy that cannot be modified,
+```
+desiredReplicas = ceil[currentReplicas * ( currentMetricValue / desiredMetricValue )]
+```
+
+## Current Supported Metrics
+| Metrics         | Condition to Scale Up |
+|-----------------|-----------------------|
+| CPU Utilisation |          > 50         |
+| Average Memory  | > 13,000,000,000      |
+
+## Future Metrics
+Custom metrics from pod-level and resource-level, such as `requests-per-second` or `packets-per-second`.
+
+## Command List
 
 Prerequisites: minikube (for an easy setup)
 ```bash
