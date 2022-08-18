@@ -25,5 +25,16 @@ kubernetesMetricSpecs:
       name: cpu
       target:
         type: Utilization
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: AverageValue
+  - type: Pods # Need to integrate custom metrics
+    pods:
+      metric:
+        name: packets-per-second
+      target:
+        type: AverageValue
 requireKubernetesMetrics: true
 runMode: "per-resource"
