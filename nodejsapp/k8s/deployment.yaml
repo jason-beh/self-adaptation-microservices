@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejsapp-deployment
+  labels:
+    app: nodejsapp
+    release: prometheus
+  namespace: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejsapp
+  template:
+    metadata:
+      labels:
+        app: nodejsapp 
+        release: prometheus
+    spec:
+      containers:
+      - name: nodeserver
+        image: jasonbeh19/nodejsapp:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: MONGODB_CONNECTION_STRING
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongodb_connection_string
