@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Results</title>
+    <link rel="stylesheet" href="/stylesheets/styles.css" />
+    <script src="/scripts/nav.js"></script>
+  </head>
+  <body class="min-h-screen bg-gray-200">
+    <div class="relative overflow-hidden min-h-screen">
+      <div class="relative pt-6 pb-6 mb-10 sm:mb-18 bg-gray-800"><%- include('./partials/nav'); %></div>
+      <div class="mx-auto max-w-7xl py-14 px-10 sm:px-20 border bg-white rounded-lg">
+        <!-- This example requires Tailwind CSS v2.0+ -->
+        <div class="">
+          <div class="sm:flex sm:items-center">
+            <div class="sm:flex-auto">
+              <h1 class="text-4xl font-bold leading-tight tracking-tight text-gray-900">Results</h1>
+              <p class="mt-2 text-sm text-gray-700">For <%= new Date(). getFullYear() %> Academic Calendar Year</p>
+            </div>
+            <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+              <button
+                type="button"
+                class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+              >
+                Print
+              </button>
+            </div>
+          </div>
+          <div class="-mx-4 mt-8 flex flex-col sm:-mx-6 md:mx-0">
+            <table class="min-w-full divide-y divide-gray-300">
+              <thead>
+                <tr>
+                  <th
+                    scope="col"
+                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6 md:pl-0"
+                  >
+                    Subject
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden py-3.5 px-3 text-right text-sm font-semibold text-gray-900 sm:table-cell"
+                  >
+                    Unit
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden py-3.5 px-3 text-right text-sm font-semibold text-gray-900 sm:table-cell"
+                  >
+                    Marks
+                  </th>
+                  <th
+                    scope="col"
+                    class="hidden py-3.5 px-3 text-right text-sm font-semibold text-gray-900 sm:table-cell"
+                  >
+                    Grade
+                  </th>
+                  <th
+                    scope="col"
+                    class="py-3.5 pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-6 md:pr-0"
+                  >
+                    Points
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-gray-200">
+                  <td class="py-4 pl-4 pr-3 text-sm sm:pl-6 md:pl-0">
+                    <div class="font-medium text-gray-900">Biology</div>
+                  </td>
+                  <td class="hidden py-4 px-3 text-right text-sm text-gray-500 sm:table-cell">3</td>
+                  <td class="hidden py-4 px-3 text-right text-sm text-gray-500 sm:table-cell">87</td>
+                  <td class="hidden py-4 px-3 text-right text-sm text-gray-500 sm:table-cell">HD</td>
+                  <td class="py-4 pl-3 pr-4 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">7</td>
+                </tr>
+
+                <!-- More projects... -->
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th
+                    scope="row"
+                    colspan="4"
+                    class="hidden pl-6 pr-3 pt-6 text-right text-sm font-normal text-gray-500 sm:table-cell md:pl-0"
+                  >
+                    Weighted Average Marks
+                  </th>
+                  <th scope="row" class="pl-4 pr-3 pt-6 text-left text-sm font-normal text-gray-500 sm:hidden">
+                    Weighted Average Marks
+                  </th>
+                  <td class="pl-3 pr-4 pt-6 text-right text-sm text-gray-500 sm:pr-6 md:pr-0">91.23</td>
+                </tr>
+                <tr>
+                  <th
+                    scope="row"
+                    colspan="4"
+                    class="hidden pl-6 pr-3 pt-4 text-right text-sm font-semibold text-gray-900 sm:table-cell md:pl-0"
+                  >
+                    GPA
+                  </th>
+                  <th scope="row" class="pl-4 pr-3 pt-4 text-left text-sm font-semibold text-gray-900 sm:hidden">
+                    GPA
+                  </th>
+                  <td class="pl-3 pr-4 pt-4 text-right text-sm font-semibold text-gray-900 sm:pr-6 md:pr-0">
+                    6.922/7.0
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

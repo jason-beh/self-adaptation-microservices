@@ -3,9 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "build:css": "postcss --watch public/stylesheets/tailwind.css -o public/stylesheets/styles.css"
   },
   "dependencies": {
+    "@tailwindcss/forms": "^0.5.2",
+    "autoprefixer": "^10.4.8",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "~1.4.4",
     "csurf": "^1.11.0",
@@ -18,6 +21,9 @@
     "mongodb": "^4.9.0",
     "morgan": "~1.9.1",
     "passport": "^0.6.0",
-    "passport-auth0": "^1.4.3"
+    "passport-auth0": "^1.4.3",
+    "postcss": "^8.4.16",
+    "postcss-cli": "^10.0.0",
+    "tailwindcss": "^3.1.8"
   }
 }
