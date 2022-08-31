@@ -4,6 +4,7 @@ const passport = require("passport");
 const qs = require("querystring");
 const Auth0Strategy = require("passport-auth0");
 const Student = require("../models/Student");
+const { dbResponseTimeHistogram } = require("../utils/metrics");
 
 const strategy = new Auth0Strategy(
   {
@@ -58,25 +59,49 @@ router.get("/callback", (req, res, next) => {
 
       // Save to db if it doesn't exists
       let email = user.emails[0].value;
-      const student = await Student.findOne({ email }).exec();
+      let student;
+
+      let metrics_labels = {
+        operation: "check_if_student_exists",
+      };
+      let timer = dbResponseTimeHistogram.startTimer();
+      try {
+        student = await Student.findOne({ email }).exec();
+        timer({ ...metrics_labels, success: true });
+      } catch (e) {
+        timer({ ...metrics_labels, success: false });
+        throw e;
+      }
+
       if (student === null) {
         const new_student = new Student({
           email: user.emails[0].value,
           nickname: user.nickname,
         });
 
-        new_student.save(function (err) {
-          if (err) {
-            console.log(err);
-            return res.send(err);
-          }
+        let metrics_labels = {
+          operation: "create_new_student",
+        };
+        let timer = dbResponseTimeHistogram.startTimer();
+        try {
+          new_student.save(function (err) {
+            if (err) {
+              console.log(err);
+              return res.send(err);
+            }
 
-          // Redirect to generate random subjects and scores
-          return res.redirect(`/api/generate-random-courses?email=${email}`);
-        });
+            timer({ ...metrics_labels, success: true });
+
+            // Redirect to generate random subjects and scores
+            return res.redirect("/api/v1/results/generate-random");
+          });
+        } catch (e) {
+          timer({ ...metrics_labels, success: false });
+          throw e;
+        }
+      } else {
+        return res.redirect(returnTo || "/results");
       }
-
-      return res.redirect(returnTo || "/results");
     });
   })(req, res, next);
 });

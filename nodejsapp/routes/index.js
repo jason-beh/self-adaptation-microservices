@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const protected_route = require("../middleware/protected_route");
+const { dbResponseTimeHistogram } = require("../utils/metrics");
 
 const Result = require("../models/Result");
 const Student = require("../models/Student");
@@ -15,12 +16,35 @@ router.get("/request-remark", protected_route, async function (req, res, next) {
   let email = req.user.emails[0].value;
 
   // Check if student exist, otherwise log them out
-  const student = await Student.findOne({ email }).exec();
+  let student;
+  let metrics_labels = {
+    operation: "check_if_student_exists",
+  };
+  let timer = dbResponseTimeHistogram.startTimer();
+  try {
+    student = await Student.findOne({ email }).exec();
+    timer({ ...metrics_labels, success: true });
+  } catch (e) {
+    timer({ ...metrics_labels, success: false });
+    throw e;
+  }
   if (student === null) {
     return res.redirect("/auth/login");
   }
 
-  const results = await Result.find({ student: student.id }).populate("course").lean();
+  // Check if results exists for the current user
+  let results;
+  metrics_labels = {
+    operation: "check_if_result_exists",
+  };
+  timer = dbResponseTimeHistogram.startTimer();
+  try {
+    results = await Result.find({ student: email }).populate("course").lean();
+    timer({ ...metrics_labels, success: true });
+  } catch (e) {
+    timer({ ...metrics_labels, success: false });
+    throw e;
+  }
   if (results.length === 0) {
     return res.redirect("/api/v1/results/generate-random");
   }
@@ -45,12 +69,35 @@ router.get("/results", protected_route, async function (req, res, next) {
   let email = req.user.emails[0].value;
 
   // Check if student exist, otherwise log them out
-  const student = await Student.findOne({ email }).exec();
+  let student;
+  let metrics_labels = {
+    operation: "check_if_student_exists",
+  };
+  let timer = dbResponseTimeHistogram.startTimer();
+  try {
+    student = await Student.findOne({ email }).exec();
+    timer({ ...metrics_labels, success: true });
+  } catch (e) {
+    timer({ ...metrics_labels, success: false });
+    throw e;
+  }
   if (student === null) {
     return res.redirect("/auth/login");
   }
 
-  const results = await Result.find({ student: student.id }).populate("course").lean();
+  // Check if results exists for the current user
+  let results;
+  metrics_labels = {
+    operation: "check_if_result_exists",
+  };
+  timer = dbResponseTimeHistogram.startTimer();
+  try {
+    results = await Result.find({ student: email }).populate("course").lean();
+    timer({ ...metrics_labels, success: true });
+  } catch (e) {
+    timer({ ...metrics_labels, success: false });
+    throw e;
+  }
   if (results.length === 0) {
     return res.redirect("/api/v1/results/generate-random");
   }

@@ -12,6 +12,8 @@ const csrf = require("csurf");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const createError = require("http-errors");
+const { startMetricsServer, restResponseTimeHistogram } = require("./utils/metrics");
+const responseTime = require("response-time");
 
 // Routes
 const authRouter = require("./routes/auth");
@@ -61,6 +63,20 @@ app.use(function (req, res, next) {
 });
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(
+  responseTime((req, res, time) => {
+    if (req?.route?.path) {
+      restResponseTimeHistogram.observe(
+        {
+          method: req.method,
+          route: req.route.path,
+          status_code: res.statusCode,
+        },
+        time * 1000
+      );
+    }
+  })
+);
 
 // Mounting routes
 app.use("/", indexRouter);
@@ -90,5 +106,8 @@ const port = process.env.PORT || 3004;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
+
+// Start metric server
+startMetricsServer();
 
 module.exports = app;
