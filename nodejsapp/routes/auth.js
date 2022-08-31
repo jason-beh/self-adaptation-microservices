@@ -13,15 +13,6 @@ const strategy = new Auth0Strategy(
     callbackURL: process.env.AUTH0_CALLBACK_URL,
   },
   function (accessToken, refreshToken, extraParams, profile, done) {
-    /**
-     * Access tokens are used to authorize users to an API
-     * (resource server)
-     * accessToken is the token to call the Auth0 API
-     * or a secured third-party API
-     * extraParams.id_token has the JSON Web Token
-     * profile has all the information from the user
-     */
-    console.log(profile);
     return done(null, profile);
   }
 );
@@ -53,7 +44,7 @@ router.get("/callback", (req, res, next) => {
     }
 
     if (!user) {
-      return res.redirect("/login");
+      return res.redirect("/auth/login");
     }
 
     req.logIn(user, async (err) => {

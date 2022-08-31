@@ -11,6 +11,7 @@ const cookieParser = require("cookie-parser");
 const csrf = require("csurf");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const createError = require("http-errors");
 
 // Routes
 const authRouter = require("./routes/auth");
