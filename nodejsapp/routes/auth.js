@@ -32,7 +32,7 @@ router.get(
     scope: "openid email profile",
   }),
   (req, res) => {
-    res.redirect("/");
+    res.redirect("/results");
   }
 );
 
@@ -76,7 +76,7 @@ router.get("/callback", (req, res, next) => {
         });
       }
 
-      return res.redirect(returnTo || "/");
+      return res.redirect(returnTo || "/results");
     });
   })(req, res, next);
 });
