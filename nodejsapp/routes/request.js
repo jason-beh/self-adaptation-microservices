@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const Result = require("../models/Result");
+const protected_route = require("../middleware/protected_route");
 
-router.post("/create-request", async function (req, res, next) {
+router.post("/create-request", protected_route, async function (req, res, next) {
   let { result_id, description } = req.body;
 
   if (!result_id || !description) {

@@ -1,37 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const protected_route = require("../middleware/protected_route");
-const Student = require("../models/Student");
 
 router.get("/", function (req, res, next) {
   res.render("index");
 });
 
-router.get("/results", function (req, res, next) {
+router.get("/results", protected_route, function (req, res, next) {
   res.render("results");
-});
-
-router.get("/test-add", function (req, res, next) {
-  const newStudent = new Student({
-    email: "aaa@gmail.com",
-    nickname: "aaa",
-  });
-
-  newStudent.save(function (err) {
-    if (err) {
-      if (err.code === 11000) {
-        return res.send("The account exists");
-      }
-      return res.send(err);
-    }
-
-    res.send(newStudent);
-  });
-});
-
-// Protected route example
-router.get("/protected", protected_route, function (req, res, next) {
-  res.send("protected");
 });
 
 // Test DB

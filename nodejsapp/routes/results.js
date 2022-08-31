@@ -4,8 +4,9 @@ const courses = require("../constants/courses");
 const Student = require("../models/Student");
 const Course = require("../models/Course");
 const Result = require("../models/Result");
+const protected_route = require("../middleware/protected_route");
 
-router.get("/generate-random", async function (req, res, next) {
+router.get("/generate-random", protected_route, async function (req, res, next) {
   let email = req.user.emails[0].value;
 
   // Check if student exist, otherwise log them out
