@@ -6,7 +6,7 @@ const Result = require("../models/Result");
 const Student = require("../models/Student");
 
 router.get("/", function (req, res, next) {
-  res.render("index");
+  return res.render("index");
 });
 
 router.get("/request-remark", protected_route, async function (req, res, next) {
@@ -15,7 +15,7 @@ router.get("/request-remark", protected_route, async function (req, res, next) {
   // Check if student exist, otherwise log them out
   const student = await Student.findOne({ email }).exec();
   if (student === null) {
-    res.redirect("/auth/login");
+    return res.redirect("/auth/login");
   }
 
   const results = await Result.find({ student: student.id }).populate("course").lean();
@@ -44,7 +44,7 @@ router.get("/results", protected_route, async function (req, res, next) {
   // Check if student exist, otherwise log them out
   const student = await Student.findOne({ email }).exec();
   if (student === null) {
-    res.redirect("/auth/login");
+    return res.redirect("/auth/login");
   }
 
   const results = await Result.find({ student: student.id }).populate("course").lean();

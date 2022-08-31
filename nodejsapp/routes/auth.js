@@ -32,7 +32,7 @@ router.get(
     scope: "openid email profile",
   }),
   (req, res) => {
-    res.redirect("/results");
+    return res.redirect("/results");
   }
 );
 
@@ -93,9 +93,7 @@ router.get("/logout", (req, res) => {
     });
     logoutURL.search = searchString;
 
-    console.log(logoutURL);
-
-    res.redirect(logoutURL);
+    return res.redirect(logoutURL);
   });
 });
 
