@@ -72,7 +72,7 @@ router.get("/callback", (req, res, next) => {
           }
 
           // Redirect to generate random subjects and scores
-          return res.redirect("/");
+          return res.redirect(`/api/generate-random-courses?email=${email}`);
         });
       }
 

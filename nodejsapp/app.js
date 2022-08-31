@@ -16,6 +16,8 @@ const createError = require("http-errors");
 // Routes
 const authRouter = require("./routes/auth");
 const indexRouter = require("./routes/index");
+const resultsRouter = require("./routes/results");
+const coursesRouter = require("./routes/courses");
 
 // Initialize express
 const app = express();
@@ -62,6 +64,8 @@ app.use(passport.session());
 // Mounting routes
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
+app.use("/api/v1/results", resultsRouter);
+app.use("/api/v1/courses", coursesRouter);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
