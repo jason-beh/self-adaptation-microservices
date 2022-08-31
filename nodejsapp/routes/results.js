@@ -49,7 +49,7 @@ router.get("/generate-random", protected_route, async function (req, res, next) 
     else grade = "HD";
 
     const new_result = new Result({
-      student: student.id,
+      student: email,
       course: course.id,
       marks: marks,
       grade: grade,

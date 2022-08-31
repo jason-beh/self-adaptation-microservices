@@ -18,6 +18,7 @@ const authRouter = require("./routes/auth");
 const indexRouter = require("./routes/index");
 const resultsRouter = require("./routes/results");
 const coursesRouter = require("./routes/courses");
+const requestsRouter = require("./routes/request");
 
 // Initialize express
 const app = express();
@@ -39,7 +40,7 @@ db.once("open", function () {
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
@@ -53,7 +54,7 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use(csrf());
+app.use(csrf({ cookie: true }));
 app.use(function (req, res, next) {
   res.locals.csrfToken = req.csrfToken();
   next();
@@ -66,6 +67,7 @@ app.use("/", indexRouter);
 app.use("/auth", authRouter);
 app.use("/api/v1/results", resultsRouter);
 app.use("/api/v1/courses", coursesRouter);
+app.use("/api/v1/requests", requestsRouter);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {

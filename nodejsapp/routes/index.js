@@ -9,6 +9,35 @@ router.get("/", function (req, res, next) {
   res.render("index");
 });
 
+router.get("/request-remark", protected_route, async function (req, res, next) {
+  let email = req.user.emails[0].value;
+
+  // Check if student exist, otherwise log them out
+  const student = await Student.findOne({ email }).exec();
+  if (student === null) {
+    res.redirect("/auth/login");
+  }
+
+  const results = await Result.find({ student: student.id }).populate("course").lean();
+  if (results.length === 0) {
+    return res.redirect("/api/v1/results/generate-random");
+  }
+
+  let options = [];
+  for (let result of results) {
+    options.push({
+      course: result.course.title,
+      id: result._id,
+    });
+  }
+
+  return res.render("remark", {
+    id: email,
+    options: options,
+    csrfToken: req.csrfToken(),
+  });
+});
+
 router.get("/results", protected_route, async function (req, res, next) {
   let email = req.user.emails[0].value;
 
