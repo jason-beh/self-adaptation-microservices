@@ -18,11 +18,19 @@
       </div>
     </div>
     <div class="flex">
+      <% if(isLoggedIn === true){ %>
       <a
         href="/auth/login"
         class="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
         >Login</a
       >
+      <% } %> <% if(isLoggedIn === false){ %>
+      <a
+        href="/auth/logout"
+        class="inline-flex items-center rounded-md border border-transparent bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700"
+        >Logout</a
+      >
+      <% } %>
     </div>
   </nav>
 </div>

@@ -6,7 +6,9 @@ const Result = require("../models/Result");
 const Student = require("../models/Student");
 
 router.get("/", function (req, res, next) {
-  return res.render("index");
+  return res.render("index", {
+    isLoggedIn: typeof req.user === "undefined",
+  });
 });
 
 router.get("/request-remark", protected_route, async function (req, res, next) {
@@ -35,6 +37,7 @@ router.get("/request-remark", protected_route, async function (req, res, next) {
     id: email,
     options: options,
     csrfToken: req.csrfToken(),
+    isLoggedIn: typeof req.user === "undefined",
   });
 });
 
@@ -82,6 +85,7 @@ router.get("/results", protected_route, async function (req, res, next) {
     weighted_average_marks: weighted_sum_points / units_sum,
     gpa: points_sum / results.length,
     id: email,
+    isLoggedIn: typeof req.user === "undefined",
   });
 });
 
