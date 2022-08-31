@@ -47,14 +47,14 @@ router.get("/generate-random", async function (req, res, next) {
     else if (marks >= 75 && marks <= 84) grade = "D";
     else grade = "HD";
 
-    const newResult = new Result({
+    const new_result = new Result({
       student: student.id,
       course: course.id,
       marks: marks,
       grade: grade,
     });
 
-    newResult.save(function (err) {
+    new_result.save(function (err) {
       if (err) {
         console.log(err);
         return res.send(err);

@@ -8,9 +8,9 @@ router.get("/seed", async function (req, res, next) {
     let courseDb = await Course.findOne({ code: course.code }).exec();
 
     if (courseDb === null) {
-      const newCourse = new Course(course);
+      const new_course = new Course(course);
 
-      newCourse.save(function (err) {
+      new_course.save(function (err) {
         if (err) {
           console.log(err);
           return res.send(err);

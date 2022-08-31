@@ -60,12 +60,12 @@ router.get("/callback", (req, res, next) => {
       let email = user.emails[0].value;
       const student = await Student.findOne({ email }).exec();
       if (student === null) {
-        const newStudent = new Student({
+        const new_student = new Student({
           email: user.emails[0].value,
           nickname: user.nickname,
         });
 
-        newStudent.save(function (err) {
+        new_student.save(function (err) {
           if (err) {
             console.log(err);
             return res.send(err);
