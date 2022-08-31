@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const qs = require("querystring");
 const Auth0Strategy = require("passport-auth0");
+const Student = require("../models/Student");
 
 const strategy = new Auth0Strategy(
   {
@@ -51,19 +52,40 @@ router.get("/callback", (req, res, next) => {
       return next(err);
     }
 
-    console.log(user);
-
     if (!user) {
       return res.redirect("/login");
     }
-    req.logIn(user, (err) => {
+
+    req.logIn(user, async (err) => {
       if (err) {
         return next(err);
       }
+
+      // Get return address
       const returnTo = req.session.returnTo;
-      console.log(returnTo);
       delete req.session.returnTo;
-      res.redirect(returnTo || "/");
+
+      // Save to db if it doesn't exists
+      let email = user.emails[0].value;
+      const student = await Student.findOne({ email }).exec();
+      if (student === null) {
+        const newStudent = new Student({
+          email: user.emails[0].value,
+          nickname: user.nickname,
+        });
+
+        newStudent.save(function (err) {
+          if (err) {
+            console.log(err);
+            return res.send(err);
+          }
+
+          // Redirect to generate random subjects and scores
+          return res.redirect("/");
+        });
+      }
+
+      return res.redirect(returnTo || "/");
     });
   })(req, res, next);
 });
@@ -85,62 +107,5 @@ router.get("/logout", (req, res) => {
     res.redirect(logoutURL);
   });
 });
-
-// passport.use(
-//   new OpenIDConnectStrategy(
-//     {
-//       issuer: `https://${process.env["AUTH0_DOMAIN"]}`,
-//       authorizationURL: `https://${process.env["AUTH0_DOMAIN"]}/authorize`,
-//       tokenURL: `https://${process.env["AUTH0_DOMAIN"]}/oauth/token`,
-//       userInfoURL: `https://${process.env["AUTH0_DOMAIN"]}/userinfo`,
-//       clientID: process.env["AUTH0_CLIENT_ID"],
-//       clientSecret: process.env["AUTH0_CLIENT_SECRET"],
-//       callbackURL: "/oauth2/redirect",
-//       scope: ["profile"],
-//     },
-//     function verify(issuer, profile, cb) {
-//       console.log(profile);
-//       return cb(null, profile);
-//     }
-//   )
-// );
-
-// passport.serializeUser(function (user, cb) {
-//   process.nextTick(function () {
-//     cb(null, { id: user.id, username: user.username, name: user.displayName });
-//   });
-// });
-
-// passport.deserializeUser(function (user, cb) {
-//   process.nextTick(function () {
-//     return cb(null, user);
-//   });
-// });
-
-// router.get("/login", (req, res, next) => {
-//   const authenticator = passport.authenticate("openidconnect", { scope: "profile" });
-//   authenticator(req, res, next);
-// });
-
-// router.get(
-//   "/oauth2/redirect",
-//   passport.authenticate("openidconnect", {
-//     successRedirect: "/",
-//     failureRedirect: "/login",
-//   })
-// );
-
-// router.get("/logout", function (req, res, next) {
-//   req.logout(function (err) {
-//     if (err) {
-//       return next(err);
-//     }
-//     var params = {
-//       client_id: process.env["AUTH0_CLIENT_ID"],
-//       returnTo: "http://localhost:3004/",
-//     };
-//     res.redirect("https://" + process.env["AUTH0_DOMAIN"] + "/v2/logout?" + qs.stringify(params));
-//   });
-// });
 
 module.exports = router;
