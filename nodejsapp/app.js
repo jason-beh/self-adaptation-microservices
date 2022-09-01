@@ -12,8 +12,9 @@ const csrf = require("csurf");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const createError = require("http-errors");
-const { startMetricsServer, restResponseTimeHistogram } = require("./utils/metrics");
+const { restResponseTimeHistogram } = require("./utils/metrics");
 const responseTime = require("response-time");
+const client = require("prom-client");
 
 // Routes
 const authRouter = require("./routes/auth");
@@ -21,6 +22,7 @@ const indexRouter = require("./routes/index");
 const resultsRouter = require("./routes/results");
 const coursesRouter = require("./routes/courses");
 const requestsRouter = require("./routes/request");
+const metricsRouter = require("./routes/metrics");
 
 // Initialize express
 const app = express();
@@ -81,6 +83,7 @@ app.use(
 // Mounting routes
 app.use("/", indexRouter);
 app.use("/auth", authRouter);
+app.use("/", metricsRouter);
 app.use("/api/v1/results", resultsRouter);
 app.use("/api/v1/courses", coursesRouter);
 app.use("/api/v1/requests", requestsRouter);
@@ -102,12 +105,12 @@ app.use(function (err, req, res, next) {
 });
 
 // Expose express app on port
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3004;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
 
 // Start metric server
-startMetricsServer();
+client.collectDefaultMetrics();
 
 module.exports = app;
