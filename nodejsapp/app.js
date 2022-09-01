@@ -102,7 +102,7 @@ app.use(function (err, req, res, next) {
 });
 
 // Expose express app on port
-const port = process.env.PORT || 3004;
+const port = process.env.PORT || 3003;
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });

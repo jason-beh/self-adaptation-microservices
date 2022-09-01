@@ -5,10 +5,10 @@ metadata:
   namespace: app
 spec:
   selector:
-    app: nodejsapp 
+    app: nodejsapp
   type: LoadBalancer
   ports:
-  - protocol: TCP
-    port: 5000
-    targetPort: 3000
-    nodePort: 31110
+    - protocol: TCP
+      port: 5000
+      targetPort: 3004
+      nodePort: 31110
