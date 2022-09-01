@@ -35,7 +35,6 @@
       </div>
       <div class="relative pt-6 pb-16 sm:pb-24">
         <%- include('./partials/nav', {isLoggedIn: isLoggedIn}); %>
-
         <main class="mt-16 sm:mt-24">
           <div class="relative mx-auto max-w-7xl px-4 sm:px-4">
             <div class="lg:grid lg:grid-cols-12 lg:gap-8">
@@ -73,11 +72,19 @@
                   </p>
                   <div class="mt-10 sm:flex sm:justify-center lg:justify-start">
                     <div class="rounded-md shadow">
+                      <% if(isLoggedIn === true){ %>
+                      <a
+                        href="/results"
+                        class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
+                        >View Results</a
+                      >
+                      <% } %> <% if(isLoggedIn === false){ %>
                       <a
                         href="/auth/login"
                         class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 md:py-4 md:px-10 md:text-lg"
                         >Login</a
                       >
+                      <% } %>
                     </div>
                   </div>
                   <p class="mt-8 text-base font-semibold text-white sm:mt-10">Relevant links:</p>
@@ -153,37 +160,37 @@
           <div class="mt-6 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:mt-8">
             <a
               href="https://prometheus.io/"
-              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-8 px-8 hover:opacity-70"
+              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-4 px-4 md:py-8 md:px-8 hover:opacity-70"
             >
               <img class="max-h-20" src="/images/logo-prometheus.png" alt="" />
             </a>
             <a
               href="https://www.docker.com/"
-              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-8 px-8 hover:opacity-70"
+              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-4 px-4 md:py-8 md:px-8 hover:opacity-70"
             >
               <img class="max-h-20" src="/images/logo-docker.png" alt="" />
             </a>
             <a
               href="https://www.mongodb.com/"
-              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-8 px-8 hover:opacity-70"
+              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-4 px-4 md:py-8 md:px-8 hover:opacity-70"
             >
               <img class="max-h-20" src="/images/logo-mongodb.png" alt="" />
             </a>
             <a
               href="https://kubernetes.io/"
-              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-8 px-8 hover:opacity-70"
+              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-4 px-4 md:py-8 md:px-8 hover:opacity-70"
             >
               <img class="max-h-20" src="/images/logo-kubernetes.png" alt="" />
             </a>
             <a
               href="https://grafana.com/"
-              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-8 px-8 hover:opacity-70"
+              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-4 px-4 md:py-8 md:px-8 hover:opacity-70"
             >
               <img class="max-h-20" src="/images/logo-grafana.png" alt="" />
             </a>
             <a
               href="https://nodejs.org/en/"
-              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-8 px-8 hover:opacity-70"
+              class="col-span-1 flex justify-center items-center bg-gray-100 rounded py-4 px-4 md:py-8 md:px-8 hover:opacity-70"
             >
               <img class="max-h-20" src="/images/logo-nodejs.png" alt="" />
             </a>

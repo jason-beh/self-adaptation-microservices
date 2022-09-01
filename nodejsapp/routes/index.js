@@ -8,7 +8,19 @@ const Student = require("../models/Student");
 
 router.get("/", function (req, res, next) {
   return res.render("index", {
-    isLoggedIn: typeof req.user === "undefined",
+    isLoggedIn: typeof req.user !== "undefined",
+  });
+});
+
+router.get("/success-request-remark", protected_route, function (req, res, next) {
+  let { is_redirected } = req.query;
+
+  if (is_redirected !== "yes") {
+    return res.redirect("/results");
+  }
+
+  return res.render("success-request-remark", {
+    isLoggedIn: typeof req.user !== "undefined",
   });
 });
 
@@ -61,7 +73,7 @@ router.get("/request-remark", protected_route, async function (req, res, next) {
     id: email,
     options: options,
     csrfToken: req.csrfToken(),
-    isLoggedIn: typeof req.user === "undefined",
+    isLoggedIn: typeof req.user !== "undefined",
   });
 });
 
@@ -132,7 +144,7 @@ router.get("/results", protected_route, async function (req, res, next) {
     weighted_average_marks: weighted_sum_points / units_sum,
     gpa: points_sum / results.length,
     id: email,
-    isLoggedIn: typeof req.user === "undefined",
+    isLoggedIn: typeof req.user !== "undefined",
   });
 });
 

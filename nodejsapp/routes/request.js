@@ -41,7 +41,7 @@ router.post("/create", protected_route, async function (req, res, next) {
       throw e;
     }
 
-    return res.redirect("/results");
+    return res.redirect("/success-request-remark?is_redirected=yes");
   });
 });
 
