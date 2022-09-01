@@ -11,5 +11,8 @@
   "prettier.bracketSpacing": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "vs-kubernetes": {
+    "disable-linters": ["resource-limits"]
+  }
 }

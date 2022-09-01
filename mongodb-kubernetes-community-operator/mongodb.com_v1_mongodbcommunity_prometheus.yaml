@@ -33,6 +33,14 @@ spec:
           db: admin
         - name: userAdminAnyDatabase
           db: admin
+        - name: clusterAdmin
+          db: uni
+        - name: userAdminAnyDatabase
+          db: uni
+        - name: clusterAdmin
+          db: sessions
+        - name: userAdminAnyDatabase
+          db: sessions
       scramCredentialsSecretName: my-scram
     - name: application
       db: admin
@@ -41,6 +49,8 @@ spec:
       roles:
         - name: readWrite
           db: uni
+        - name: readWrite
+          db: sessions
       scramCredentialsSecretName: app-scram
 
 ---
@@ -89,32 +99,31 @@ metadata:
   namespace: mongodb
 spec:
   endpoints:
+    # Configuring a Prometheus Endpoint with basic Auth.
+    # `prom-secret` is a Secret containing a `username` and `password` entries.
+    - basicAuth:
+        password:
+          key: password
+          name: metrics-endpoint-password
+        username:
+          key: username
+          name: metrics-endpoint-password
 
-  # Configuring a Prometheus Endpoint with basic Auth.
-  # `prom-secret` is a Secret containing a `username` and `password` entries.
-  - basicAuth:
-      password:
-        key: password
-        name: metrics-endpoint-password
-      username:
-        key: username
-        name: metrics-endpoint-password
+      # This port matches what we created in our MongoDB Service.
+      port: prometheus
 
-    # This port matches what we created in our MongoDB Service.
-    port: prometheus
+      # If using HTTPS enabled endpoint, change scheme to https
+      scheme: http
 
-    # If using HTTPS enabled endpoint, change scheme to https
-    scheme: http
-
-    # Configure different TLS related settings. For more information, see:
-    # https://github.com/prometheus-operator/prometheus-operator/blob/main/pkg/apis/monitoring/v1/types.go#L909
-    # tlsConfig:
-    #    insecureSkipVerify: true
+      # Configure different TLS related settings. For more information, see:
+      # https://github.com/prometheus-operator/prometheus-operator/blob/main/pkg/apis/monitoring/v1/types.go#L909
+      # tlsConfig:
+      #    insecureSkipVerify: true
 
   # What namespace to watch
   namespaceSelector:
     matchNames:
-    - mongodb
+      - mongodb
 
   # Service labels to match
   selector:
