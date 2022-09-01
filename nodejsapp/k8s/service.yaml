@@ -3,12 +3,13 @@ kind: Service
 metadata:
   name: nodejsapp-service
   namespace: app
+  labels:
+    app: nodejsapp-svc
 spec:
   selector:
     app: nodejsapp
-  type: LoadBalancer
+  type: ClusterIP
   ports:
-    - protocol: TCP
-      port: 5000
-      targetPort: 3004
-      nodePort: 31110
+    - targetPort: 3004
+      port: 3080
+      name: jasonbeh
