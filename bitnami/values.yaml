@@ -1,0 +1,46 @@
+architecture: replicaset
+
+replicaCount: 2
+
+auth:
+  enabled: false
+  # rootUser: "application"
+  # rootPassword: "password"
+
+readinessProbe:
+  enabled: false
+
+livenessProbe:
+  enabled: false
+
+# externalAccess:
+#   enabled: true
+#   service:
+#     type: LoadBalancer
+#     port: 27017
+#   autoDiscovery:
+#     enabled: true
+#   serviceAccount:
+#     create: true
+
+rbac:
+  create: true
+
+image:
+  debug: true
+
+metrics:
+  ## @param metrics.enabled Enable using a sidecar Prometheus exporter
+  ##
+  enabled: true
+
+  serviceMonitor:
+    ## @param metrics.serviceMonitor.enabled Create ServiceMonitor Resource for scraping metrics using Prometheus Operator
+    ##
+    enabled: true
+    ## @param metrics.serviceMonitor.namespace Namespace which Prometheus is running in
+    ##
+    namespace: bitnami-database
+
+    labels:
+      release: prometheus

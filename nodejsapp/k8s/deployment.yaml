@@ -20,6 +20,7 @@ spec:
       containers:
         - name: nodeserver
           image: jasonbeh19/nodejsapp:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3004
           env:

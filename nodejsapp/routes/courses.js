@@ -5,7 +5,7 @@ const Course = require("../models/Course");
 const { dbResponseTimeHistogram } = require("../utils/metrics");
 const protected_route = require("../middleware/protected_route");
 
-router.get("/seed", protected_route, async function (req, res, next) {
+router.get("/seed", async function (req, res, next) {
   for (let course of courses) {
     let courseDb;
 
