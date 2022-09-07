@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const db = require("../utils/db");
 
 const CourseSchema = new Schema({
   title: { type: String, required: true },
@@ -7,4 +8,4 @@ const CourseSchema = new Schema({
   unit: { type: Number, required: true },
 });
 
-module.exports = mongoose.model("Course", CourseSchema, "courses");
+module.exports = db.model("Course", CourseSchema, "courses");

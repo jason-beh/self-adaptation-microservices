@@ -9,7 +9,9 @@ const protected_route = require("../middleware/protected_route");
 const { dbResponseTimeHistogram } = require("../utils/metrics");
 
 router.get("/generate-random", protected_route, async function (req, res, next) {
-  let email = req.user.emails[0].value;
+  let email = req.session.user.emails[0].value;
+
+  console.log("Random: " + req.session.user);
 
   // Check if student exist, otherwise log them out
   let student;

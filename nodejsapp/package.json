@@ -8,6 +8,7 @@
     "watch:css": "postcss --watch public/stylesheets/tailwind.css -o public/stylesheets/styles.css"
   },
   "dependencies": {
+    "@faker-js/faker": "^7.5.0",
     "@tailwindcss/forms": "^0.5.2",
     "autoprefixer": "^10.4.8",
     "connect-mongo": "^4.6.0",

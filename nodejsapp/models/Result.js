@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const db = require("../utils/db");
 
 const ResultSchema = new Schema({
   student: { type: String, required: true },
@@ -8,4 +9,4 @@ const ResultSchema = new Schema({
   grade: { type: String, enum: ["HD", "D", "C", "P", "F"], required: true },
 });
 
-module.exports = mongoose.model("Result", ResultSchema, "results");
+module.exports = db.model("Result", ResultSchema, "results");

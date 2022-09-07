@@ -12,7 +12,7 @@ router.post("/create", protected_route, async function (req, res, next) {
   }
 
   let new_request = new Request({
-    student: req.user.emails[0].value,
+    student: req.session.user.emails[0].value,
     result: result,
     description: description,
   });

@@ -31,15 +31,6 @@ const app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// Connect to db using mongoose
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
-  console.log("Connection to database is successful!");
-});
-
 // Express middlewares
 app.use(logger("dev"));
 app.use(express.json());
@@ -63,19 +54,21 @@ app.use(function (req, res, next) {
   res.locals.csrfToken = req.csrfToken();
   next();
 });
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.use(
   responseTime((req, res, time) => {
     if (req?.route?.path) {
-      restResponseTimeHistogram.observe(
-        {
-          method: req.method,
-          route: req.route.path,
-          status_code: res.statusCode,
-        },
-        time * 1000
-      );
+      if (req.route.path !== "/metrics") {
+        restResponseTimeHistogram.observe(
+          {
+            method: req.method,
+            route: req.route.path,
+            status_code: res.statusCode,
+          },
+          time * 1000
+        );
+      }
     }
   })
 );
