@@ -1,5 +1,6 @@
 const protected_route = (req, res, next) => {
-  if (req.user) {
+  // console.log("protected_route: " + req.session.user);
+  if (req.session.user != null) {
     return next();
   }
   req.session.returnTo = req.originalUrl;
