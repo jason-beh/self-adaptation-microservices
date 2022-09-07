@@ -3,38 +3,20 @@ evaluate:
   timeout: 2500
   shell:
     entrypoint: "python"
-    logStderr: true
-    logVerbosity: 3
     command:
-      - "-u"
       - "/evaluate.py"
 metric:
   type: "shell"
   timeout: 2500
   shell:
     entrypoint: "python"
-    logStderr: true
-    logVerbosity: 3
     command:
-      - "-u"
       - "/metric.py"
-
 kubernetesMetricSpecs:
   - type: Resource
     resource:
       name: cpu
       target:
         type: Utilization
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: AverageValue
-  - type: Pods # Need to integrate custom metrics
-    pods:
-      metric:
-        name: packets-per-second
-      target:
-        type: AverageValue
 requireKubernetesMetrics: true
 runMode: "per-resource"

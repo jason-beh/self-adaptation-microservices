@@ -4,25 +4,26 @@ import sys
 
 
 def main():
-    spec = json.loads(sys.stdin.read())
-    print(spec)
-    metric(spec)
+    print(sys.stdin.read())
+    # spec = json.loads(sys.stdin.read())
+    # print(spec)
+    # metric(spec)
 
 
 def metric(spec):
     # Get CPU metrics
     cpu_metrics = spec["kubernetesMetrics"][0]
     current_replicas = cpu_metrics["current_replicas"]
-    cpu_resource = cpu_metrics["resource"]
-    cpu_pod_metrics_info = cpu_resource["pod_metrics_info"]
+    # cpu_resource = cpu_metrics["resource"]
+    # cpu_pod_metrics_info = cpu_resource["pod_metrics_info"]
 
-    # Total up all of the pod cpu values
-    total_utilization = 0
-    for _, pod_info in cpu_pod_metrics_info.items():
-        total_utilization += pod_info["Value"]
+    # # Total up all of the pod cpu values
+    # total_utilization = 0
+    # for _, pod_info in cpu_pod_metrics_info.items():
+    #     total_utilization += pod_info["Value"]
 
-    # Calculate the average utilization
-    average_utilization = total_utilization / current_replicas
+    # # Calculate the average utilization
+    # average_utilization = total_utilization / current_replicas
 
     # # Get memory metrics
     # memory_metrics = spec["kubernetesMetrics"][1]
@@ -45,7 +46,7 @@ def metric(spec):
         json.dumps(
             {
                 "current_replicas": current_replicas,
-                "average_utilization": average_utilization,
+                # "average_utilization": average_utilization,
             }
         )
     )
