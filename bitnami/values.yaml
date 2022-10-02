@@ -40,7 +40,7 @@ metrics:
     enabled: true
     ## @param metrics.serviceMonitor.namespace Namespace which Prometheus is running in
     ##
-    namespace: bitnami-database
+    namespace: app
 
     labels:
       release: prometheus
