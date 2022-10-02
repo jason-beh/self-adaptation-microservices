@@ -14,7 +14,7 @@ router.get("/seed", async function (req, res, next) {
     };
     let timer = dbResponseTimeHistogram.startTimer();
     try {
-      courseDb = await Course.findOne({ code: course.code }).exec();
+      courseDb = await Course.findOne({ code: course.code }).read("n").exec();
       timer({ ...metrics_labels, success: true });
     } catch (e) {
       timer({ ...metrics_labels, success: false });

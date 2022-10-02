@@ -53,7 +53,7 @@ router.get("/login", async function (req, res, next) {
     };
     let timer = dbResponseTimeHistogram.startTimer();
     try {
-      student = await Student.findOne({ email }).exec();
+      student = await Student.findOne({ email }).read("n").exec();
       timer({ ...metrics_labels, success: true });
     } catch (e) {
       timer({ ...metrics_labels, success: false });
@@ -131,7 +131,7 @@ router.get("/login", async function (req, res, next) {
 //       };
 //       let timer = dbResponseTimeHistogram.startTimer();
 //       try {
-//         student = await Student.findOne({ email }).exec();
+//         student = await Student.findOne({ email }).read('n').exec();
 //         timer({ ...metrics_labels, success: true });
 //       } catch (e) {
 //         timer({ ...metrics_labels, success: false });
