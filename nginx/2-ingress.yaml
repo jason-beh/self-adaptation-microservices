@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: podinfo
+  namespace: app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "test.com"
+      http:
+        paths:
+          - backend:
+              service:
+                name: nodejsapp-service
+                port:
+                  number: 3080
+            path: /
+            pathType: Prefix
