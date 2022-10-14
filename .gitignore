@@ -1,2 +1,4 @@
 node_modules
 nodejsapp/.env
+
+.DS_STORE
