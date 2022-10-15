@@ -6,4 +6,3 @@ class HelloWorldUser(FastHttpUser):
     @task
     def hello_world(self):
         self.client.get("/")
-        self.client.get("/results")
