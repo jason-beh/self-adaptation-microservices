@@ -1,0 +1,13 @@
+apiVersion: jasonbehapp.jasonbeh.com/v1
+kind: CustomScaler
+metadata:
+  labels:
+    app.kubernetes.io/name: customscaler
+    app.kubernetes.io/instance: customscaler-sample
+    app.kubernetes.io/part-of: topics-final
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: topics-final
+  name: customscaler-sample
+  namespace: ingress-nginx
+spec:
+  replicas: 1

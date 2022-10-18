@@ -1,0 +1,16 @@
+domain: jasonbeh.com
+layout:
+- go.kubebuilder.io/v3
+projectName: topics-final
+repo: jasonbeh.com/custom-scaler
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: jasonbeh.com
+  group: jasonbehapp
+  kind: CustomScaler
+  path: jasonbeh.com/custom-scaler/api/v1
+  version: v1
+version: "3"
