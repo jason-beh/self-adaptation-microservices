@@ -71,24 +71,37 @@ const MAX_ERROR_RATE = 0.3
 func getFormattedResults(url string) []interface{} {
 	url_with_time := url + fmt.Sprint(time.Now().Unix())
 
+	empty_result := make([]interface{}, 0)
+
 	resp, err := http.Get(url_with_time)
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
+		return empty_result
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		log.Print(err)
+		return empty_result
 	}
 
 	var raw_data map[string]interface{}
 	if err := json.Unmarshal(body, &raw_data); err != nil {
-		panic(err)
+		log.Print(err)
+		return empty_result
 	}
 
-	data := raw_data["data"].(map[string]interface{})
+	data, ok := raw_data["data"].(map[string]interface{})
+	if !ok {
+		log.Print(err)
+		return empty_result
+	}
 
-	result := data["result"].([]interface{})
+	result, ok := data["result"].([]interface{})
+	if !ok {
+		log.Print(err)
+		return empty_result
+	}
 
 	return result
 }
@@ -97,13 +110,21 @@ func evaluate_active_connections(replicas int32) int {
 	results := getFormattedResults("http://localhost:9090/api/v1/query?query=sum%28avg_over_time%28nginx_ingress_controller_nginx_process_connections%7Bstate%3D%22active%22%7D%5B2m%5D%29%29&time=")
 
 	for _, r := range results {
-		node := r.(map[string]interface{})
-		value := node["value"].([]interface{})
+		node, ok := r.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		value, ok := node["value"].([]interface{})
+		if !ok {
+			continue
+		}
 
 		if value[1] != "NaN" {
 			connections, err := strconv.Atoi(value[1].(string))
 			if err != nil {
-				panic(err)
+				log.Print(err)
+				continue
 			}
 
 			connections_per_pod := int32(connections) / replicas
@@ -125,13 +146,21 @@ func evaluate_memory() int {
 	results := getFormattedResults("http://localhost:9090/api/v1/query?query=avg%28nginx_ingress_controller_nginx_process_resident_memory_bytes%29+&time=")
 
 	for _, r := range results {
-		node := r.(map[string]interface{})
-		value := node["value"].([]interface{})
+		node, ok := r.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		value, ok := node["value"].([]interface{})
+		if !ok {
+			continue
+		}
 
 		if value[1] != "NaN" {
 			memory_bits, err := strconv.Atoi(value[1].(string))
 			if err != nil {
-				panic(err)
+				log.Print(err)
+				continue
 			}
 
 			memory_megabytes := memory_bits / (1024 * 1024)
@@ -153,13 +182,21 @@ func evaluate_cpu() int {
 	results := getFormattedResults("http://localhost:9090/api/v1/query?query=avg+%28rate+%28nginx_ingress_controller_nginx_process_cpu_seconds_total%7B%7D%5B2m%5D%29%29+&time=")
 
 	for _, r := range results {
-		node := r.(map[string]interface{})
-		value := node["value"].([]interface{})
+		node, ok := r.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		value, ok := node["value"].([]interface{})
+		if !ok {
+			continue
+		}
 
 		if value[1] != "NaN" {
 			cpu_usage_seconds, err := strconv.ParseFloat(value[1].(string), 32)
 			if err != nil {
-				panic(err)
+				log.Print(err)
+				continue
 			}
 
 			fmt.Println("cpu_usage_seconds: ", cpu_usage_seconds)
@@ -179,13 +216,21 @@ func evaluate_error_rates() int {
 	results := getFormattedResults("http://localhost:9090/api/v1/query?query=sum%28rate%28nginx_ingress_controller_requests%7Bstatus%3D%7E%22%5B4-5%5D.*%22%7D%5B2m%5D%29%29%2Fsum%28rate%28nginx_ingress_controller_requests%5B2m%5D%29%29&time=")
 
 	for _, r := range results {
-		node := r.(map[string]interface{})
-		value := node["value"].([]interface{})
+		node, ok := r.(map[string]interface{})
+		if !ok {
+			continue
+		}
+
+		value, ok := node["value"].([]interface{})
+		if !ok {
+			continue
+		}
 
 		if value[1] != "NaN" {
 			error_rate, err := strconv.ParseFloat(value[1].(string), 32)
 			if err != nil {
-				panic(err)
+				log.Print(err)
+				continue
 			}
 
 			fmt.Println("error_rate: ", error_rate)
