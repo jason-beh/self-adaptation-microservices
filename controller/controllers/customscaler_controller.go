@@ -112,24 +112,31 @@ func evaluate_active_connections(replicas int32) int {
 	for _, r := range results {
 		node, ok := r.(map[string]interface{})
 		if !ok {
+			fmt.Println("node type assertion not ok")
 			continue
 		}
 
 		value, ok := node["value"].([]interface{})
 		if !ok {
+			fmt.Println("node value type assertion not ok")
 			continue
 		}
 
 		if value[1] != "NaN" {
-			connections, err := strconv.Atoi(value[1].(string))
+			connections, err := strconv.ParseFloat(value[1].(string), 64)
 			if err != nil {
 				log.Print(err)
 				continue
 			}
 
-			connections_per_pod := int32(connections) / replicas
+			// In case we divide by 0
+			if replicas == 0 {
+				replicas = 1
+			}
 
-			fmt.Println("Connections Per Pod: " + string(connections_per_pod))
+			connections_per_pod := connections / float64(replicas)
+
+			fmt.Println("Connections Per Pod: " + fmt.Sprintf("%f", connections_per_pod))
 
 			if connections_per_pod > MAX_CONNECTIONS_PER_POD {
 				return 1
@@ -148,16 +155,18 @@ func evaluate_memory() int {
 	for _, r := range results {
 		node, ok := r.(map[string]interface{})
 		if !ok {
+			fmt.Println("node type assertion not ok")
 			continue
 		}
 
 		value, ok := node["value"].([]interface{})
 		if !ok {
+			fmt.Println("node value type assertion not ok")
 			continue
 		}
 
 		if value[1] != "NaN" {
-			memory_bits, err := strconv.Atoi(value[1].(string))
+			memory_bits, err := strconv.ParseFloat(value[1].(string), 64)
 			if err != nil {
 				log.Print(err)
 				continue
@@ -184,11 +193,13 @@ func evaluate_cpu() int {
 	for _, r := range results {
 		node, ok := r.(map[string]interface{})
 		if !ok {
+			fmt.Println("node type assertion not ok")
 			continue
 		}
 
 		value, ok := node["value"].([]interface{})
 		if !ok {
+			fmt.Println("node value type assertion not ok")
 			continue
 		}
 
@@ -218,11 +229,13 @@ func evaluate_error_rates() int {
 	for _, r := range results {
 		node, ok := r.(map[string]interface{})
 		if !ok {
+			fmt.Println("node type assertion not ok")
 			continue
 		}
 
 		value, ok := node["value"].([]interface{})
 		if !ok {
+			fmt.Println("node value type assertion not ok")
 			continue
 		}
 
@@ -297,14 +310,15 @@ func (r *CustomScalerReconciler) Reconcile(ctx context.Context, req ctrl.Request
 
 		final_replicas := *foundDeployment.Spec.Replicas + replicas_change
 
+		// set to evaluated_replicas
+		minimum_replicas := int32(1)
+		if final_replicas <= 0 {
+			final_replicas = minimum_replicas
+		}
+
 		log.Info(fmt.Sprint("final_replicas: ", final_replicas))
 
 		if *foundDeployment.Spec.Replicas != final_replicas {
-			// set to evaluated_replicas
-			minimum_replicas := int32(0)
-			if final_replicas < 0 {
-				final_replicas = minimum_replicas
-			}
 
 			foundDeployment.Spec.Replicas = &final_replicas
 
