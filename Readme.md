@@ -244,8 +244,8 @@ kubectl apply -f .
 
 The following table describes the average results obtained from 10 iterations. Full details can be found at the `/results` folder.
 
-| Variation/Http Request Duration In Seconds | Average | Minimum | Median | Maximum | p(90) | p(95) | Total Requests | Requests Per Second |
-| ------------------------------------------ | ------- | ------- | ------ | ------- | ----- | ----- | -------------- | ------------------- |
-| Control                                    | 6.81    | 0.33    | 6.57   | 29.59   | 9.82  | 12.40 | 31118.50       | 257.90              |
-| HPA                                        | 7.43    | 0.61    | 7.25   | 27.63   | 10.09 | 14.79 | 29247.80       | 246.21              |
-| Kubernetes Operator                        | 6.30    | 0.47    | 6.25   | 20.31   | 8.47  | 11.60 | 36569.60       | 301.06              |
+|                     | Average | Minimum | Median | Maximum | p(90) | p(95) | Total Requests | Requests Per Second |
+| ------------------- | ------- | ------- | ------ | ------- | ----- | ----- | -------------- | ------------------- |
+| Control             | 6.81    | 0.33    | 6.57   | 29.59   | 9.82  | 12.40 | 31118.50       | 257.90              |
+| HPA                 | 7.43    | 0.61    | 7.25   | 27.63   | 10.09 | 14.79 | 29247.80       | 246.21              |
+| Kubernetes Operator | 6.30    | 0.47    | 6.25   | 20.31   | 8.47  | 11.60 | 36569.60       | 301.06              |
